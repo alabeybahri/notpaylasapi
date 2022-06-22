@@ -1,3 +1,7 @@
+//using Project.Filters;
+//using Project.Middleware;
+using System.Net;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -12,6 +16,12 @@ builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
     builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
 }));
 
+//builder.Services.AddAuthorization(options =>
+//{
+//    options.AddPolicy("Token",
+//        policy => policy.Requirements.Add(new CustomAuthorization()));
+//});
+
 var app = builder.Build();
 app.UseCors("corsapp");
 // Configure the HTTP request pipeline.
@@ -24,7 +34,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-
+//app.UseMiddleware<TokenMiddleware>();
 app.MapControllers();
 
 app.Run();
