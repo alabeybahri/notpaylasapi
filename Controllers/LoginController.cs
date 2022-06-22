@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
 using Project.Model;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -13,6 +12,16 @@ namespace Project.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
+
+
+        //private IUserService userService;
+
+        //public LoginController(IUserService userService)
+        //{
+        //    this.userService = userService;
+        //}
+
+
         // GET: api/<LoginController>
         [HttpGet]
         public IEnumerable<string> Get()
@@ -29,9 +38,9 @@ namespace Project.Controllers
 
         // POST api/<LoginController>
         [HttpPost]
-        public void Post(DTOUser data)
+        public bool Post(DTOUser data)
         {
-            Console.WriteLine(data.UserName);
+            return true;
         }
 
         // PUT api/<LoginController>/5
