@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Project.Filters;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -10,6 +11,7 @@ namespace Project.Controllers
     {
         // GET: api/<DataController>
         [HttpGet]
+        [CustomAuthorization]
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
@@ -17,6 +19,7 @@ namespace Project.Controllers
 
         // GET api/<DataController>/5
         [HttpGet("{id}")]
+        [CustomAuthorization]
         public string Get(int id)
         {
             return "value";

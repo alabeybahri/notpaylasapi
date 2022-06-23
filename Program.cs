@@ -1,5 +1,6 @@
 //using Project.Filters;
 //using Project.Middleware;
+using Project.Filters;
 using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +21,11 @@ builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
 //{
 //    options.AddPolicy("Token",
 //        policy => policy.Requirements.Add(new CustomAuthorization()));
+//});
+
+//builder.Services.AddControllers(config =>
+//{
+//    config.Filters.Add(new CustomAuthorization());
 //});
 
 var app = builder.Build();

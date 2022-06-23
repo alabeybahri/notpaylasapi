@@ -1,24 +1,31 @@
-﻿//using Microsoft.AspNetCore.Authorization;
-//using Microsoft.AspNetCore.Mvc;
-//using Microsoft.AspNetCore.Mvc.Filters;
-//using System.Security.Claims;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
-//namespace Project.Filters
-//{
-//    public class CustomAuthorization : AuthorizationHandler<TokenRequirement>
-//    {
-//        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, TokenRequirement requirement)
-//        {
-//            context.Succeed(requirement);
+namespace Project.Filters
+{
+    public class CustomAuthorization : Attribute, IAuthorizationFilter
+    {
+        public void OnAuthorization(AuthorizationFilterContext context)
+        {
+            if (context.HttpContext.Request.Headers.TryGetValue("Authorization", out var value))
+            {
+                var handler = new JwtSecurityTokenHandler();
+                var jsonToken = handler.ReadToken(value);
+                var tokenS = jsonToken as JwtSecurityToken;
+                var username = tokenS?.Claims.First(claim => claim.Type == ClaimTypes.Name).Value;
+            }
+            else
+            {
+                context.Result = new ContentResult()
+                {
+                    StatusCode = (int)System.Net.HttpStatusCode.BadRequest,
+                    Content = "Unauthorized"
+                };
+            }
+        }
+    }
 
-//            return null;
-//        }
-//    }
-
-//    public class TokenRequirement : IAuthorizationRequirement
-//    {
-
-//    }
-
-//}
+}
 

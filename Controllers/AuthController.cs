@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Project.Filters;
 using Project.Model;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -37,6 +38,16 @@ namespace Project.Controllers
             }
             return Unauthorized("Invalid password or username");
         }
+
+        [HttpGet]
+        [Route("deneme")]
+        [CustomAuthorization]
+        public string Deneme()
+        {
+            return "deneme text";
+        }
+
+
         private void HashPassword(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using (var hmacsha = new System.Security.Cryptography.HMACSHA512())
