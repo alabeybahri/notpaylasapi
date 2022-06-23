@@ -1,5 +1,7 @@
 //using Project.Filters;
 //using Project.Middleware;
+using Microsoft.EntityFrameworkCore;
+using Project.Context;
 using Project.Filters;
 using System.Net;
 
@@ -27,6 +29,11 @@ builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
 //{
 //    config.Filters.Add(new CustomAuthorization());
 //});
+
+string connString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+builder.Services.AddDbContext<MyDbContext>(options => options.UseSqlServer(connString));
+
 
 var app = builder.Build();
 app.UseCors("corsapp");
