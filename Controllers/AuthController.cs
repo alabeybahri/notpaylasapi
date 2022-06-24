@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Project.Filters;
 using Project.Model;
+using Project.Repositories;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -14,30 +15,36 @@ namespace Project.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private static readonly User user = new();
+        private readonly IUserRepo _repository;
+        public AuthController(IUserRepo repository)
+        {
+            _repository = repository;
+        }
         private static byte[] keyBase = System.Text.Encoding.UTF8.GetBytes("base key for bahri alabey");
 
         [HttpPost]
         [Route("Register")]
-        public void Register([FromBody] DTOUser requesteduser)
+        public int Register([FromBody] DTOUser requesteduser)
         {
-            user.userName = requesteduser.userName;
+            var userName = requesteduser.userName;
             HashPassword(requesteduser.password, out byte[] passwordhash, out byte[] passwordsalt);
-            user.passwordSalt = passwordsalt;
-            user.passwordHash = passwordhash;
+            var passwordHash = passwordhash;
+            string bitString = BitConverter.ToString(passwordHash);
+            return _repository.createUser(userName, bitString);
         }
 
-        [HttpPost]
-        [Route("Login")]
-        public ActionResult<string> Login(DTOUser requesteduser)
-        {
-            if (CheckPassword(requesteduser.password, user.passwordHash, user.passwordSalt) && requesteduser.userName.Equals(user.userName))
-            {
-                var token = CreateToken(user);
-                return Ok(token);
-            }
-            return Unauthorized("Invalid password or username");
-        }
+        //[HttpPost]
+        //[Route("Login")]
+        //public ActionResult<string> Login(DTOUser requesteduser)
+        //{
+
+        //    if (CheckPassword(requesteduser.password, user.passwordHash, user.passwordSalt) && requesteduser.userName.Equals(user.userName))
+        //    {
+        //        var token = CreateToken(user);
+        //        return Ok(token);
+        //    }
+        //    return Unauthorized("Invalid password or username");
+        //}
 
         [HttpGet]
         [Route("deneme")]

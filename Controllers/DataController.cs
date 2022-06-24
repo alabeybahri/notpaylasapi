@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Project.Context;
 using Project.Filters;
+using Project.Repositories;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -9,6 +11,11 @@ namespace Project.Controllers
     [ApiController]
     public class DataController : ControllerBase
     {
+        private readonly IUserRepo _repository;
+        public DataController(IUserRepo repository)
+        {
+            _repository = repository;
+        }
         // GET: api/<DataController>
         [HttpGet]
         [CustomAuthorization]
@@ -29,6 +36,20 @@ namespace Project.Controllers
         [HttpPost]
         public void Post([FromBody] string value)
         {
+        }
+
+        //[HttpPost, Route("createUser")]
+        //public int createUser(int userID,string userName,string userPasswordHash)
+        //{
+
+        //    return _repository.createUser(userID, userName, userPasswordHash);
+        //}
+
+        [HttpPost, Route("getUser")]
+        public int getUser(int userID)
+        {
+
+            return _repository.getUser(userID);
         }
 
         // PUT api/<DataController>/5
