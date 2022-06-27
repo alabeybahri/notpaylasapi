@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using Project.Filters;
 using Project.Model;
 using Project.Repositories;
 using System.IdentityModel.Tokens.Jwt;
@@ -16,10 +14,12 @@ namespace Project.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IUserRepo _repository;
-        public AuthController(IUserRepo repository)
+        private readonly IUserRepo userRepository;
+        private readonly INoteRepo noteRepository;
+        public AuthController(IUserRepo userRepository, INoteRepo noteRepository)
         {
-            _repository = repository;
+            this.userRepository = userRepository;
+            this.noteRepository = noteRepository;
         }
         private static byte[] keyBase = Encoding.Default.GetBytes("base key for bahri alabey");
 
@@ -30,7 +30,7 @@ namespace Project.Controllers
             var userName = requesteduser.userName;
             HashPassword(requesteduser.password, out byte[] passwordhash, out byte[] passwordsalt);
             
-            if(_repository.createUser(userName, passwordhash, passwordsalt))
+            if(userRepository.createUser(userName, passwordhash, passwordsalt))
             {
                 return Ok(); 
             }
@@ -42,7 +42,7 @@ namespace Project.Controllers
         public ActionResult<string> Login(DTOUser requesteduser)
         {
             var userName = requesteduser.userName;
-            var DBUser = _repository.getUser(userName);
+            var DBUser = userRepository.getUser(userName);
             if(DBUser == null)
             {
                 return Unauthorized("Invalid password or username");
@@ -57,12 +57,11 @@ namespace Project.Controllers
         }
 
 
-        [HttpGet]
-        [Route("deneme")]
-        [CustomAuthorization]
-        public string Deneme()
+        [HttpPost]
+        [Route("AddNote")]
+        public bool Deneme(DTONote requestedNote)
         {
-            return "deneme text";
+            return noteRepository.noteCreate(requestedNote.Title,requestedNote.CreatedBy,requestedNote.CategoryID,requestedNote.NoteValue);
         }
 
 

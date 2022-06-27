@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Project.Context
 {
@@ -25,6 +26,9 @@ namespace Project.Context
         //    optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=NotPaylasDB");
         //}
         public DbSet<UserProfile> UserProfiles { get; set; }
+        public DbSet<NoteProfile> NoteProfiles { get; set; }
+        public DbSet<NoteProfile> CategoryProfiles { get; set; }
+        public DbSet<NoteProfile> RatingProfiles { get; set; }
 
     }
 
@@ -33,11 +37,44 @@ namespace Project.Context
     {
         [Key] 
         public int ID { get; set; }
-        public string? Name { get; set; }
+        public string Name { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
+    }
+    
+    public class NoteProfile
+    {
+        [Key]
+        public int ID { get; set; }
+        public string Title { get; set; }
+        public string CreatedAt { get; set; }
+        [ForeignKey("Users")]
+        public int CreatedBy { get; set; }
+        public string UpdatedAt{ get; set; }
+        [ForeignKey("Users")]
+        public int UpdatedBy { get; set; }
+        public int IsDeleted { get; set; }
+        public int IsActive { get; set; }
+        [ForeignKey("Categories")]
+        public int CategoryID{ get; set; }
+        public string NoteValue { get; set; }
 
-        
+    }
+
+    public class CategoryProfile
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int UserID { get; set; }
+    }
+
+    public class RatingProfile
+    {
+        public int NoteID { get; set; }
+        public int Rating { get; set; }
+        public int UserID { get; set; }
+
     }
 
 }

@@ -10,7 +10,7 @@ namespace Project.Repositories
 
         public UserRepo(MyDbContext _context)
         {
-            this.context = _context;
+            context = _context;
         }
 
 
@@ -24,7 +24,7 @@ namespace Project.Repositories
 
             var returnedUser = context
                         .UserProfiles
-                        .FromSqlRaw("exec getUser @Name",IDParam)
+                        .FromSqlRaw("exec userGetByName @Name",IDParam)
                         .ToList().FirstOrDefault();
             if (returnedUser!=null)
             {
@@ -53,7 +53,7 @@ namespace Project.Repositories
             };
             try
             {
-                context.Database.ExecuteSqlRaw("exec createUser @Name, @PasswordHash, @PasswordSalt", NameParam, PasswordParam, SaltParam);
+                context.Database.ExecuteSqlRaw("exec userCreate @Name, @PasswordHash, @PasswordSalt", NameParam, PasswordParam, SaltParam);
                 return true;
             }
             catch (Exception)
