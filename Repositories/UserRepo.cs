@@ -15,35 +15,54 @@ namespace Project.Repositories
 
 
 
-        public int getUser(int userID)
+        public UserProfile? getUser(string userName)
     {
-            var IDParam = new SqlParameter("@ID", System.Data.SqlDbType.Int)
+            var IDParam = new SqlParameter("@Name", System.Data.SqlDbType.VarChar)
             {
-                Value = userID
+                Value = userName
             };
 
             var returnedUser = context
                         .UserProfiles
-                        .FromSqlRaw("exec getUser @ID",IDParam)
-                        .ToList();
-            
-            return 0;
+                        .FromSqlRaw("exec getUser @Name",IDParam)
+                        .ToList().FirstOrDefault();
+            if (returnedUser!=null)
+            {
+                return returnedUser;
+            }
+            else
+            {
+                return null;
+            }
     }
 
-        int IUserRepo.createUser(string userName, string userPasswordHash)
+        bool IUserRepo.createUser(string userName, byte[] userPasswordHash, byte[] userPasswordSalt)
         {
             
             var NameParam = new SqlParameter("@Name", System.Data.SqlDbType.VarChar)
             {
                 Value = userName
             };
-            var PasswordParam = new SqlParameter("@PasswordHash", System.Data.SqlDbType.NVarChar)
+            var PasswordParam = new SqlParameter("@PasswordHash", System.Data.SqlDbType.VarBinary)
             {
                 Value = userPasswordHash
             };
-            Console.WriteLine(userPasswordHash);
-            context.Database.ExecuteSqlRaw("exec createUser @Name, @PasswordHash", NameParam, PasswordParam);
-            return 0;
+            var SaltParam = new SqlParameter("@PasswordSalt", System.Data.SqlDbType.VarBinary)
+            {
+                Value = userPasswordSalt
+            };
+            try
+            {
+                context.Database.ExecuteSqlRaw("exec createUser @Name, @PasswordHash, @PasswordSalt", NameParam, PasswordParam, SaltParam);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+                
+            }
+            
+            
         }
     }
 }

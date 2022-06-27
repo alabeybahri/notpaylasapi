@@ -38,19 +38,6 @@ namespace Project.Controllers
         {
         }
 
-        //[HttpPost, Route("createUser")]
-        //public int createUser(int userID,string userName,string userPasswordHash)
-        //{
-
-        //    return _repository.createUser(userID, userName, userPasswordHash);
-        //}
-
-        [HttpPost, Route("getUser")]
-        public int getUser(int userID)
-        {
-
-            return _repository.getUser(userID);
-        }
 
         // PUT api/<DataController>/5
         [HttpPut("{id}")]

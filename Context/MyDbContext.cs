@@ -33,13 +33,11 @@ namespace Project.Context
     {
         [Key] 
         public int ID { get; set; }
-        public string Name { get; set; }
-        public string PasswordHash { get; set; }
+        public string? Name { get; set; }
+        public byte[] PasswordHash { get; set; }
+        public byte[] PasswordSalt { get; set; }
 
-        public static explicit operator UserProfile(List<UserProfile> v)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 
 }
