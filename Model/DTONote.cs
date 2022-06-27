@@ -2,16 +2,6 @@
 {
     public class DTONote
     {
-        public DTONote(string title, int createdBy, int updatedBy, bool ısDeleted, bool ısActive, int categoryID, string noteValue)
-        {
-            Title = title;
-            CreatedBy = createdBy;
-            UpdatedBy = updatedBy;
-            IsDeleted = ısDeleted;
-            IsActive = ısActive;
-            CategoryID = categoryID;
-            NoteValue = noteValue;
-        }
         public DTONote(string title, int createdBy, int categoryID, string noteValue)
         {
             Title = title;
