@@ -13,19 +13,29 @@ namespace Project.Controllers
     {
         private readonly IUserRepo _userRepository;
         private readonly ICategoryRepo _categoryRepository;
-        public DataController(IUserRepo userrepository, ICategoryRepo categoryrepository)
+        private readonly INoteRepo _noteRepository;
+        public DataController(IUserRepo userrepository, ICategoryRepo categoryrepository, INoteRepo noterepository)
         {
             _userRepository = userrepository;
             _categoryRepository = categoryrepository;
+            _noteRepository = noterepository;
         }
 
         // GET api/<DataController>/5
-        [HttpGet]
+        [HttpGet("categories")]
         //[CustomAuthorization]
-        public List<CategoryProfile> Get()
+        public List<CategoryProfile> GetCategories()
         {
             var categories = _categoryRepository.categoryGetAll();
             return categories;
+        }
+
+        [HttpGet("notes")]
+        //[CustomAuthorization]
+        public List<NoteProfile> GetNotes()
+        {
+            var notes = _noteRepository.noteGetAll();
+            return notes;
         }
 
         // POST api/<DataController>

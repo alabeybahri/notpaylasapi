@@ -49,7 +49,8 @@ namespace Project.Repositories
 
         public List<NoteProfile> noteGetAll()
         {
-            throw new NotImplementedException();
+            var noteProfiles = context.NoteProfiles.FromSqlRaw("exec noteGetAll").ToList();
+            return noteProfiles;
         }
 
         public List<NoteProfile> noteGetByCategoryID(int CategoryID)

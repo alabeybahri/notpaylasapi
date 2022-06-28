@@ -47,14 +47,14 @@ namespace Project.Context
         [Key]
         public int ID { get; set; }
         public string Title { get; set; }
-        public string CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; }
         [ForeignKey("Users")]
         public int CreatedBy { get; set; }
-        public string UpdatedAt{ get; set; }
+        public DateTime? UpdatedAt { get; set; }
         [ForeignKey("Users")]
-        public int UpdatedBy { get; set; }
-        public int IsDeleted { get; set; }
-        public int IsActive { get; set; }
+        public int? UpdatedBy { get; set; }
+        public bool IsDeleted { get; set; }
+        public bool IsActive { get; set; }
         [ForeignKey("Categories")]
         public int CategoryID{ get; set; }
         public string NoteValue { get; set; }
