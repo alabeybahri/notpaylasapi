@@ -27,8 +27,8 @@ namespace Project.Context
         //}
         public DbSet<UserProfile> UserProfiles { get; set; }
         public DbSet<NoteProfile> NoteProfiles { get; set; }
-        public DbSet<NoteProfile> CategoryProfiles { get; set; }
-        public DbSet<NoteProfile> RatingProfiles { get; set; }
+        public DbSet<CategoryProfile> CategoryProfiles { get; set; }
+        //public DbSet<RatingProfile> RatingProfiles { get; set; }
 
     }
 
@@ -69,12 +69,12 @@ namespace Project.Context
         public int UserID { get; set; }
     }
 
-    public class RatingProfile
-    {
-        public int NoteID { get; set; }
-        public int Rating { get; set; }
-        public int UserID { get; set; }
+    //public class RatingProfile
+    //{
+    //    public int NoteID { get; set; }
+    //    public int Rating { get; set; }
+    //    public int UserID { get; set; }
 
-    }
+    //}
 
 }

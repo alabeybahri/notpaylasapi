@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Project.Filters;
 using Project.Model;
 using Project.Repositories;
+using Project.Services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -16,10 +18,18 @@ namespace Project.Controllers
     {
         private readonly IUserRepo userRepository;
         private readonly INoteRepo noteRepository;
-        public AuthController(IUserRepo userRepository, INoteRepo noteRepository)
+        private readonly ICategoryRepo categoryRepository;
+        private readonly IAuthorizationService _authService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public AuthController(IUserRepo userRepository, INoteRepo noteRepository, ICategoryRepo categoryRepository, 
+            IAuthorizationService authService, IHttpContextAccessor httpContextAccessor)
         {
             this.userRepository = userRepository;
             this.noteRepository = noteRepository;
+            this.categoryRepository = categoryRepository;
+            this._authService = authService;
+            this._httpContextAccessor = httpContextAccessor;
+
         }
         private static byte[] keyBase = Encoding.Default.GetBytes("base key for bahri alabey");
 
@@ -29,10 +39,10 @@ namespace Project.Controllers
         {
             var userName = requesteduser.userName;
             HashPassword(requesteduser.password, out byte[] passwordhash, out byte[] passwordsalt);
-            
-            if(userRepository.createUser(userName, passwordhash, passwordsalt))
+
+            if (userRepository.createUser(userName, passwordhash, passwordsalt))
             {
-                return Ok(); 
+                return Ok();
             }
             return Unauthorized("\"User already exists \"");
         }
@@ -43,13 +53,14 @@ namespace Project.Controllers
         {
             var userName = requesteduser.userName;
             var DBUser = userRepository.getUser(userName);
-            if(DBUser == null)
+
+            if (DBUser == null)
             {
                 return Unauthorized("Invalid password or username");
             }
             if (CheckPassword(requesteduser.password, DBUser.PasswordHash, DBUser.PasswordSalt))
             {
-                var user = new User(userName, DBUser.PasswordHash, DBUser.PasswordSalt);
+                var user = new User(DBUser.ID, userName, DBUser.PasswordHash, DBUser.PasswordSalt);
                 var token = CreateToken(user);
                 return Ok(token);
             }
@@ -59,11 +70,33 @@ namespace Project.Controllers
 
         [HttpPost]
         [Route("AddNote")]
-        public bool Deneme(DTONote requestedNote)
+        [CustomAuthorization]
+        public bool AddNote(DTONote requestedNote)
         {
-            return noteRepository.noteCreate(requestedNote.Title,requestedNote.CreatedBy,requestedNote.CategoryID,requestedNote.NoteValue);
+            var context = _httpContextAccessor.HttpContext;
+            var createdBy = _authService.solveTokenUserID(context);
+            int categoryID = int.Parse(requestedNote.Category);
+            return noteRepository.noteCreate(requestedNote.Title, createdBy, categoryID, requestedNote.NoteValue);
         }
 
+        [HttpPost]
+        [Route("AddCategory")]
+        [CustomAuthorization]
+        public bool AddCategory(DTOCategory requestedCategory)
+        {
+            var context = _httpContextAccessor.HttpContext;
+            var createdBy = _authService.solveTokenUserID(context);
+            return categoryRepository.categoryCreate(requestedCategory.name, requestedCategory.description, createdBy);
+        }
+
+        //public bool AddCategory(DTONote requestedNote)
+        //{
+        //    var context = _httpContextAccessor.HttpContext;
+        //    var createdBy = _authService.solveTokenUserID(context);
+        //    int categoryID = int.Parse(requestedNote.Category);
+        //    return noteRepository.noteCreate(requestedNote.Title, createdBy, categoryID, requestedNote.NoteValue);
+
+        //}
 
         private void HashPassword(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
@@ -83,9 +116,10 @@ namespace Project.Controllers
 
         private string CreateToken(User user)
         {
-            List<Claim> claim = new List<Claim>()
+            List<Claim> claim = new()
             {
-                new Claim(ClaimTypes.Name,user.userName)
+                new Claim(ClaimTypes.Name,user.userName),
+                new Claim(ClaimTypes.NameIdentifier,user.ID.ToString())
             };
             var key = new SymmetricSecurityKey(keyBase);
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);

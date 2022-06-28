@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Project.Context;
 using Project.Filters;
 using Project.Repositories;
+using Project.Services;
 using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddScoped<IUserRepo, UserRepo>();
 builder.Services.AddScoped<INoteRepo, NoteRepo>();
+builder.Services.AddScoped<ICategoryRepo, CategoryRepo>();
+builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
+builder.Services.AddHttpContextAccessor();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -50,6 +54,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
 //app.UseMiddleware<TokenMiddleware>();
 app.MapControllers();
 

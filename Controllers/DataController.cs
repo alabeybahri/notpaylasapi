@@ -11,25 +11,21 @@ namespace Project.Controllers
     [ApiController]
     public class DataController : ControllerBase
     {
-        private readonly IUserRepo _repository;
-        public DataController(IUserRepo repository)
+        private readonly IUserRepo _userRepository;
+        private readonly ICategoryRepo _categoryRepository;
+        public DataController(IUserRepo userrepository, ICategoryRepo categoryrepository)
         {
-            _repository = repository;
-        }
-        // GET: api/<DataController>
-        [HttpGet]
-        [CustomAuthorization]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
+            _userRepository = userrepository;
+            _categoryRepository = categoryrepository;
         }
 
         // GET api/<DataController>/5
-        [HttpGet("{id}")]
-        [CustomAuthorization]
-        public string Get(int id)
+        [HttpGet]
+        //[CustomAuthorization]
+        public List<CategoryProfile> Get()
         {
-            return "value";
+            var categories = _categoryRepository.categoryGetAll();
+            return categories;
         }
 
         // POST api/<DataController>
