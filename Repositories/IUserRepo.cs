@@ -4,7 +4,11 @@ namespace Project.Repositories
 {
     public interface IUserRepo
     {
-        public UserProfile? getUser(string userName);
-        public bool createUser(string userName, byte[] userPasswordHash, byte[] userPasswordSalt);
+        public UserProfile? userGetByName(string userName);
+        public UserProfile? userGetByID(int ID);
+        public List<UserProfile>? userGetAll();
+        public void userDeleteByID(int ID);
+        public void userDeleteByName(string name);
+        public bool userCreate(string userName, byte[] userPasswordHash, byte[] userPasswordSalt);
     }
 }

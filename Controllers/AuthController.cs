@@ -40,7 +40,7 @@ namespace Project.Controllers
             var userName = requesteduser.userName;
             HashPassword(requesteduser.password, out byte[] passwordhash, out byte[] passwordsalt);
 
-            if (userRepository.createUser(userName, passwordhash, passwordsalt))
+            if (userRepository.userCreate(userName, passwordhash, passwordsalt))
             {
                 return Ok();
             }
@@ -52,7 +52,7 @@ namespace Project.Controllers
         public ActionResult<string> Login(DTOUser requesteduser)
         {
             var userName = requesteduser.userName;
-            var DBUser = userRepository.getUser(userName);
+            var DBUser = userRepository.userGetByName(userName);
 
             if (DBUser == null)
             {
@@ -66,37 +66,6 @@ namespace Project.Controllers
             }
             return Unauthorized("Invalid password or username");
         }
-
-
-        [HttpPost]
-        [Route("AddNote")]
-        [CustomAuthorization]
-        public bool AddNote(DTONote requestedNote)
-        {
-            var context = _httpContextAccessor.HttpContext;
-            var createdBy = _authService.solveTokenUserID(context);
-            int categoryID = int.Parse(requestedNote.Category);
-            return noteRepository.noteCreate(requestedNote.Title, createdBy, categoryID, requestedNote.NoteValue);
-        }
-
-        [HttpPost]
-        [Route("AddCategory")]
-        [CustomAuthorization]
-        public bool AddCategory(DTOCategory requestedCategory)
-        {
-            var context = _httpContextAccessor.HttpContext;
-            var createdBy = _authService.solveTokenUserID(context);
-            return categoryRepository.categoryCreate(requestedCategory.name, requestedCategory.description, createdBy);
-        }
-
-        //public bool AddCategory(DTONote requestedNote)
-        //{
-        //    var context = _httpContextAccessor.HttpContext;
-        //    var createdBy = _authService.solveTokenUserID(context);
-        //    int categoryID = int.Parse(requestedNote.Category);
-        //    return noteRepository.noteCreate(requestedNote.Title, createdBy, categoryID, requestedNote.NoteValue);
-
-        //}
 
         private void HashPassword(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {

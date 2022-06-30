@@ -15,6 +15,7 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<IUserRepo, UserRepo>();
 builder.Services.AddScoped<INoteRepo, NoteRepo>();
 builder.Services.AddScoped<ICategoryRepo, CategoryRepo>();
+builder.Services.AddScoped<IRatingRepo, RatingRepo>();
 builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
 builder.Services.AddHttpContextAccessor();
 

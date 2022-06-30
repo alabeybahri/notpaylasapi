@@ -44,33 +44,58 @@ namespace Project.Repositories
 
         public void noteDeleteByID(int ID)
         {
-            throw new NotImplementedException();
+            var IDParam = new SqlParameter("@ID", System.Data.SqlDbType.Int)
+            {
+                Value = ID
+            };
+            context.Database.ExecuteSqlRaw("exec noteDeleteByID @ID", IDParam);
         }
 
-        public List<NoteProfile> noteGetAll()
+        public List<NoteProfile>? noteGetAll()
         {
             var noteProfiles = context.NoteProfiles.FromSqlRaw("exec noteGetAll").ToList();
             return noteProfiles;
         }
 
-        public List<NoteProfile> noteGetByCategoryID(int CategoryID)
+        public List<NoteProfile>? noteGetByCategoryID(int CategoryID)
         {
-            throw new NotImplementedException();
+            var CategoryIDParam = new SqlParameter("@CategoryID", System.Data.SqlDbType.Int)
+            {
+                Value = CategoryID
+            };
+            var noteProfile = context.NoteProfiles.FromSqlRaw("exec noteGetByCategoryID @CategoryID", CategoryIDParam).ToList();
+            return noteProfile;
         }
 
-        public List<NoteProfile> noteGetByCreatorID(int CreatorID)
+        public List<NoteProfile>? noteGetByCreatorID(int CreatorID)
         {
-            throw new NotImplementedException();
+            var IDParam = new SqlParameter("@CreatedBy", System.Data.SqlDbType.Int)
+            {
+                Value = CreatorID
+            };
+            var notes = context.NoteProfiles.FromSqlRaw("exec noteGetByCreatorID @CreatedBy", IDParam).ToList();
+            return notes;
         }
 
-        public NoteProfile noteGetByID(int ID)
+        public NoteProfile? noteGetByID(int ID)
         {
-            throw new NotImplementedException();
+            var IDParam = new SqlParameter("@ID", System.Data.SqlDbType.Int)
+            {
+                Value = ID
+            };
+            var note = context.NoteProfiles.FromSqlRaw("exec noteGetByID @ID", IDParam).ToList().FirstOrDefault();
+            return note;
+
         }
 
-        public List<NoteProfile> noteGetByUpdaterID(int UpdaterID)
+        public List<NoteProfile>? noteGetByUpdaterID(int UpdaterID)
         {
-            throw new NotImplementedException();
+            var UpdatedByParam = new SqlParameter("@UpdatedBy", System.Data.SqlDbType.Int)
+            {
+                Value = UpdaterID
+            };
+            var note = context.NoteProfiles.FromSqlRaw("exec noteGetByUpdaterID @UpdatedBy", UpdatedByParam).ToList();
+            return note;
         }
 
         public void noteUpdate(int ID,string Title,string NoteValue,string UpdatedAt,int UpdatedBy)

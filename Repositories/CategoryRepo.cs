@@ -20,15 +20,6 @@ namespace Project.Repositories
             };
             var returnedCategory = context.CategoryProfiles.FromSqlRaw("exec categoryGetByName @Name", NameParam).ToList().FirstOrDefault();
             return returnedCategory;
-            //try
-            //{
-            //    var returnedCategory = context.CategoryProfiles.FromSqlRaw("exec categoryGetByName @Name",NameParam).ToList().FirstOrDefault();
-            //    return returnedCategory;
-            //}
-            //catch (Exception)
-            //{
-            //    return null;
-            //}
         }
 
         public List<CategoryProfile> categoryGetAll()
@@ -37,7 +28,7 @@ namespace Project.Repositories
             return categoryProfiles;
         }
 
-        bool ICategoryRepo.categoryCreate(string name, string description, int userID)
+        public bool categoryCreate(string name, string description, int userID)
         {
             var NameParam = new SqlParameter("@Name", System.Data.SqlDbType.NVarChar)
             {
@@ -53,6 +44,34 @@ namespace Project.Repositories
             };
             context.Database.ExecuteSqlRaw("exec categoryCreate @Name, @Description, @UserID", NameParam, DescParam, UserIDParam);
             return true;
+        }
+
+        public CategoryProfile? categoryGetByID(int ID)
+        {
+            var IDParam = new SqlParameter("@ID", System.Data.SqlDbType.Int)
+            {
+                Value = ID
+            };
+            var returnedCategory = context.CategoryProfiles.FromSqlRaw("exec categoryGetByID @ID", IDParam).ToList().FirstOrDefault();
+            return returnedCategory;
+        }
+
+        public void categorydeleteByID(int ID)
+        {
+            var IDParam = new SqlParameter("@ID", System.Data.SqlDbType.Int)
+            { 
+                Value = ID
+            };
+            context.Database.ExecuteSqlRaw("exec categoryDeleteByID @ID", IDParam);
+        }
+
+        public void categorydeleteByName(string name)
+        {
+            var NameParam = new SqlParameter("@Name", System.Data.SqlDbType.NVarChar)
+            {
+                Value = name
+            };
+            context.Database.ExecuteSqlRaw("exec categoryDeleteByName @ID", NameParam);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Project.Repositories
 
 
 
-        public UserProfile? getUser(string userName)
+        public UserProfile? userGetByName(string userName)
     {
             var IDParam = new SqlParameter("@Name", System.Data.SqlDbType.VarChar)
             {
@@ -36,7 +36,7 @@ namespace Project.Repositories
             }
     }
 
-        bool IUserRepo.createUser(string userName, byte[] userPasswordHash, byte[] userPasswordSalt)
+        public bool userCreate(string userName, byte[] userPasswordHash, byte[] userPasswordSalt)
         {
             
             var NameParam = new SqlParameter("@Name", System.Data.SqlDbType.VarChar)
@@ -61,8 +61,38 @@ namespace Project.Repositories
                 return false;
                 
             }
-            
-            
+        }
+
+        public UserProfile? userGetByID(int ID)
+        {
+            var IDParam = new SqlParameter("@ID", System.Data.SqlDbType.Int)
+            {
+                Value = ID
+            };
+            return context.UserProfiles.FromSqlRaw("exec userGetByID @ID",IDParam).ToList().FirstOrDefault();
+        }
+
+        public List<UserProfile>? userGetAll()
+        {
+            return context.UserProfiles.FromSqlRaw("exec userGetAll").ToList();
+        }
+
+        public void userDeleteByID(int ID)
+        {
+            var IDParam = new SqlParameter("@ID", System.Data.SqlDbType.Int)
+            {
+                Value = ID
+            };
+            context.Database.ExecuteSqlRaw("exec userDeleteByID @ID", IDParam);
+        }
+
+        public void userDeleteByName(string name)
+        {
+            var NameParam = new SqlParameter("@Name", System.Data.SqlDbType.VarChar)
+            {
+                Value = name
+            };
+            context.Database.ExecuteSqlRaw("exec userDeleteByName @Name", NameParam);
         }
     }
 }

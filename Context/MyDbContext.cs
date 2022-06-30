@@ -28,7 +28,7 @@ namespace Project.Context
         public DbSet<UserProfile> UserProfiles { get; set; }
         public DbSet<NoteProfile> NoteProfiles { get; set; }
         public DbSet<CategoryProfile> CategoryProfiles { get; set; }
-        //public DbSet<RatingProfile> RatingProfiles { get; set; }
+        public DbSet<RatingProfile> RatingProfiles { get; set; }
 
     }
 
@@ -57,7 +57,7 @@ namespace Project.Context
         public bool IsActive { get; set; }
         [ForeignKey("Categories")]
         public int CategoryID{ get; set; }
-        public string NoteValue { get; set; }
+        public string? NoteValue { get; set; }
 
     }
 
@@ -68,13 +68,17 @@ namespace Project.Context
         public string Description { get; set; }
         public int UserID { get; set; }
     }
+    [Keyless]
 
-    //public class RatingProfile
-    //{
-    //    public int NoteID { get; set; }
-    //    public int Rating { get; set; }
-    //    public int UserID { get; set; }
+    public class RatingProfile
+    {
+        [ForeignKey("Notes")]
+        public int NoteID { get; set; }
+        public int Rating { get; set; }
+        [ForeignKey("Users")]
 
-    //}
+        public int UserID { get; set; }
+
+    }
 
 }
