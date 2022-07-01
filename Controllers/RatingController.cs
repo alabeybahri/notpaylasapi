@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Project.Filters;
 using Project.Model;
 using Project.Repositories;
 using Project.Services;
@@ -8,6 +9,7 @@ namespace Project.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [CustomAuthorization]
     public class RatingController : Controller
     {
         private readonly IRatingRepo _ratingRepository;
@@ -30,6 +32,28 @@ namespace Project.Controllers
             _ratingRepository.ratingCreate(rating);
         }
 
+        [HttpPost("getrating")]
+        public int? GetRating([FromBody] int NoteID)
+        {
+            var context = _httpContextAccessor.HttpContext;
+            var userID = _authService.solveTokenUserID(context);
+            var ratingValue = _ratingRepository.ratingGet(NoteID, userID);
+            if (ratingValue == null)
+            {
+                return 0;
+            }
+            return ratingValue;
+        }
+        [HttpPost("getratingaverage")]
+        public float? GetRatingAverage([FromBody] int NoteID)
+        {
+            var ratingValue = _ratingRepository.ratingGetAverage(NoteID);
+            if (ratingValue == null)
+            {
+                return 0;
+            }
+            return ratingValue;
+        }
 
 
 

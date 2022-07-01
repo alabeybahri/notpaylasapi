@@ -29,6 +29,7 @@ namespace Project.Context
         public DbSet<NoteProfile> NoteProfiles { get; set; }
         public DbSet<CategoryProfile> CategoryProfiles { get; set; }
         public DbSet<RatingProfile> RatingProfiles { get; set; }
+        public DbSet<NoteProfileWUserName> NoteProfileWUserNames { get; set; }
 
     }
 
@@ -81,4 +82,24 @@ namespace Project.Context
 
     }
 
+    public class NoteProfileWUserName
+    {
+        [Key]
+        public int ID { get; set; }
+        public string Title { get; set; }
+        public DateTime CreatedAt { get; set; }
+        [ForeignKey("Users")]
+        public int CreatedBy { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+        [ForeignKey("Users")]
+        public int? UpdatedBy { get; set; }
+        public bool IsDeleted { get; set; }
+        public bool IsActive { get; set; }
+        [ForeignKey("Categories")]
+        public int CategoryID { get; set; }
+        public string? NoteValue { get; set; }
+
+        public string? Name { get; set; }
+
+    }
 }

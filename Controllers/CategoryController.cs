@@ -10,7 +10,7 @@ namespace Project.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[CustomAuthorization]
+    [CustomAuthorization]
 
     public class CategoryController : ControllerBase
     {

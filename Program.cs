@@ -1,11 +1,8 @@
-//using Project.Filters;
-//using Project.Middleware;
 using Microsoft.EntityFrameworkCore;
 using Project.Context;
 using Project.Filters;
 using Project.Repositories;
 using Project.Services;
-using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -51,6 +48,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+//app.UseMiddleware<AuthMiddleware>();
 
 app.UseHttpsRedirection();
 

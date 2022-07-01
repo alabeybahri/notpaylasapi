@@ -77,13 +77,13 @@ namespace Project.Repositories
             return notes;
         }
 
-        public NoteProfile? noteGetByID(int ID)
+        public NoteProfileWUserName? noteGetByID(int ID)
         {
             var IDParam = new SqlParameter("@ID", System.Data.SqlDbType.Int)
             {
                 Value = ID
             };
-            var note = context.NoteProfiles.FromSqlRaw("exec noteGetByID @ID", IDParam).ToList().FirstOrDefault();
+            var note = context.NoteProfileWUserNames.FromSqlRaw("exec noteGetByID @ID", IDParam).ToList().FirstOrDefault();
             return note;
 
         }

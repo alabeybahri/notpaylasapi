@@ -9,7 +9,7 @@ using Project.Services;
 namespace Project.Controllers
 {
     [Route("api/[controller]")]
-    //[CustomAuthorization]
+    [CustomAuthorization()]
     [ApiController]
     public class NoteController : ControllerBase
     {
@@ -60,7 +60,7 @@ namespace Project.Controllers
             return note;
         }
         [HttpGet("byID")]
-        public NoteProfile? noteGetByID(int ID)
+        public NoteProfileWUserName? noteGetByID(int ID)
         {
             var note = _noteRepository.noteGetByID(ID);
             return note;

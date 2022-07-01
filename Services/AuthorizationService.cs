@@ -15,6 +15,16 @@ namespace Project.Services
             var userID = int.Parse(tokenS?.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value);
             return userID;
         }
+
+        public string solveTokenUserName(HttpContext context)
+        {
+            context.Request.Headers.TryGetValue("Authorization", out var value);
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(value);
+            var tokenS = jsonToken as JwtSecurityToken;
+            var userName = tokenS?.Claims.First(claim => claim.Type == ClaimTypes.Name).Value;
+            return userName;
+        }
     }
 
 }
