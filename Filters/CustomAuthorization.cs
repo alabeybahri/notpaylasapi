@@ -15,6 +15,7 @@ namespace Project.Filters
                 var jsonToken = handler.ReadToken(value);
                 var tokenS = jsonToken as JwtSecurityToken;
                 var username = tokenS?.Claims.First(claim => claim.Type == ClaimTypes.Name).Value;
+                // Further check can be added here.
             }
             else
             {

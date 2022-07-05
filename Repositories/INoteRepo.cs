@@ -4,7 +4,7 @@ namespace Project.Repositories
 {
     public interface INoteRepo
     {
-        public bool noteCreate(string Title,int CreatedBy,int CategoryID,string NoteValue);
+        public bool noteCreate(string Title,int CreatedBy,int CategoryID,string NoteValue, string? FileValue, string? FileType);
         public void noteDeleteByID(int ID);
         public List<NoteProfile>? noteGetAll();
         public List<NoteProfile>? noteGetByCategoryID(int CategoryID);

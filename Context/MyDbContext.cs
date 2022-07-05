@@ -59,6 +59,10 @@ namespace Project.Context
         [ForeignKey("Categories")]
         public int CategoryID{ get; set; }
         public string? NoteValue { get; set; }
+        public string? FileValue { get; set; }
+        public string? FileType { get; set; }
+
+        
 
     }
 
@@ -98,8 +102,9 @@ namespace Project.Context
         [ForeignKey("Categories")]
         public int CategoryID { get; set; }
         public string? NoteValue { get; set; }
-
         public string? Name { get; set; }
+        public string? FileValue { get; set; }
+        public string? FileType { get; set; }
 
     }
 }

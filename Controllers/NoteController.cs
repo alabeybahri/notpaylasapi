@@ -26,12 +26,13 @@ namespace Project.Controllers
 
         [HttpPost]
         [Route("addnote")]
+
         public bool AddNote([FromBody]DTONote requestedNote)
         {
             var context = _httpContextAccessor.HttpContext;
             var createdBy = _authService.solveTokenUserID(context);
             int categoryID = int.Parse(requestedNote.Category);
-            return _noteRepository.noteCreate(requestedNote.Title, createdBy, categoryID, requestedNote.NoteValue);
+            return _noteRepository.noteCreate(requestedNote.Title, createdBy, categoryID, requestedNote.NoteValue,requestedNote.FileValue,requestedNote.FileType);
         }
 
 

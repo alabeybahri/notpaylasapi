@@ -13,7 +13,7 @@ namespace Project.Repositories
         {
             context = _context;
         }
-        public bool noteCreate(string Title,int CreatedBy, int CategoryID, string NoteValue)
+        public bool noteCreate(string Title,int CreatedBy, int CategoryID, string NoteValue,string? FileValue,string? FileType)
         {
             var TitleParam = new SqlParameter("@Title", System.Data.SqlDbType.VarChar)
             {
@@ -31,9 +31,18 @@ namespace Project.Repositories
             {
                 Value = NoteValue
             };
+            var FileValueParam = new SqlParameter("@FileValue", System.Data.SqlDbType.NVarChar)
+            {
+                Value = FileValue
+            };
+            var FileTypeParam = new SqlParameter("@FileType", System.Data.SqlDbType.VarChar)
+            {
+                Value = FileType
+            };
+
             try
             {
-                context.Database.ExecuteSqlRaw("exec noteCreate @Title, @CreatedBy, @CategoryID, @NoteValue", TitleParam, CreatedByParam, CategoryIDParam, NoteValueParam);
+                context.Database.ExecuteSqlRaw("exec noteCreate @Title, @CreatedBy, @CategoryID, @NoteValue, @FileValue, @FileType", TitleParam, CreatedByParam, CategoryIDParam, NoteValueParam,FileValueParam,FileTypeParam);
                 return true;
             }
             catch (Exception)
