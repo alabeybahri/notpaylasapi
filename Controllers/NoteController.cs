@@ -42,6 +42,18 @@ namespace Project.Controllers
             _noteRepository.noteDeleteByID(ID);
         }
 
+        [HttpDelete("inactiveByID")]
+        public void noteInactiveByID(int ID)
+        {
+            _noteRepository.noteInactiveByID(ID);
+        }
+
+        [HttpGet("activeByID")]
+        public void noteActiveByID(int ID)
+        {
+            _noteRepository.noteActiveByID(ID);
+        }
+
         [HttpGet("all")]
         public List<NoteProfile>? GetNotes()
         {
@@ -59,6 +71,12 @@ namespace Project.Controllers
         {
             var note = _noteRepository.noteGetByCreatorID(creatorID);
             return note;
+        }
+        [HttpGet("bycreatorIDHidden")]
+        public List<NoteProfileWUserName>? noteGetByCreatorIDHidden(int creatorID)
+        {
+            var notes = _noteRepository.noteGetByCreatorIDHidden(creatorID);
+            return notes;
         }
         [HttpGet("byID")]
         public NoteProfileWUserName? noteGetByID(int ID)

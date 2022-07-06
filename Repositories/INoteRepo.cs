@@ -6,9 +6,12 @@ namespace Project.Repositories
     {
         public bool noteCreate(string Title,int CreatedBy,int CategoryID,string NoteValue, string? FileValue, string? FileType);
         public void noteDeleteByID(int ID);
+        public void noteInactiveByID(int ID);
+        public void noteActiveByID(int ID);
         public List<NoteProfile>? noteGetAll();
         public List<NoteProfile>? noteGetByCategoryID(int CategoryID);
         public List<NoteProfile>? noteGetByCreatorID(int CreatorID);
+        public List<NoteProfileWUserName>? noteGetByCreatorIDHidden(int CreatorID);
         public NoteProfileWUserName? noteGetByID(int ID);
         public List<NoteProfile>? noteGetByUpdaterID(int UpdaterID);
         public void noteUpdate(int ID, string Title, string NoteValue, string UpdatedAt, int UpdatedBy);

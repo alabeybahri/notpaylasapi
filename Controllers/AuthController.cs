@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using Project.Filters;
 using Project.Model;
 using Project.Repositories;
@@ -62,7 +63,14 @@ namespace Project.Controllers
             {
                 var user = new User(DBUser.ID, userName, DBUser.PasswordHash, DBUser.PasswordSalt);
                 var token = CreateToken(user);
-                return Ok(token);
+                var loginObject = new
+                {
+                    token = token,
+                    userName = userName,
+                    userID = DBUser.ID,
+                };
+                string jsonData = JsonConvert.SerializeObject(loginObject);
+                return Ok(jsonData);
             }
             return Unauthorized("Invalid password or username");
         }
