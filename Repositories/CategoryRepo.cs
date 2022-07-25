@@ -42,8 +42,16 @@ namespace Project.Repositories
             {
                 Value = userID
             };
-            context.Database.ExecuteSqlRaw("exec categoryCreate @Name, @Description, @UserID", NameParam, DescParam, UserIDParam);
-            return true;
+            try
+            {
+                context.Database.ExecuteSqlRaw("exec categoryCreate @Name, @Description, @UserID", NameParam, DescParam, UserIDParam);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            
         }
 
         public CategoryProfile? categoryGetByID(int ID)
@@ -65,13 +73,21 @@ namespace Project.Repositories
             context.Database.ExecuteSqlRaw("exec categoryDeleteByID @ID", IDParam);
         }
 
-        public void categorydeleteByName(string name)
+        public bool categorydeleteByName(string name)
         {
             var NameParam = new SqlParameter("@Name", System.Data.SqlDbType.NVarChar)
             {
                 Value = name
             };
-            context.Database.ExecuteSqlRaw("exec categoryDeleteByName @ID", NameParam);
+            try
+            {
+                context.Database.ExecuteSqlRaw("exec categoryDeleteByName @Name", NameParam);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Project.Repositories
         public List<CategoryProfile> categoryGetAll();
         public bool categoryCreate(string name,string description,int userID );
         public void categorydeleteByID(int ID);
-        public void categorydeleteByName(string name);
+        public bool categorydeleteByName(string name);
 
     }
 }

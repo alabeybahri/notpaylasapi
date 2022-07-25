@@ -30,7 +30,11 @@ namespace Project.Controllers
         {
             var context = _httpContextAccessor.HttpContext;
             var createdBy = _authService.solveTokenUserID(context);
-            return _categoryRepository.categoryCreate(requestedCategory.name, requestedCategory.description, createdBy);
+            if (_categoryRepository.categoryCreate(requestedCategory.name, requestedCategory.description, createdBy))
+            {
+            return true;
+            }
+            return false;
         }
         [HttpDelete("byID")]
         public void categoryDeleteByID(int ID)
@@ -39,9 +43,9 @@ namespace Project.Controllers
         }
 
         [HttpDelete("byname")]
-        public void categoryDeleteByName(string name)
+        public bool categoryDeleteByName(string name)
         {
-            _categoryRepository.categorydeleteByName(name);
+            return _categoryRepository.categorydeleteByName(name);
         }
         
         [HttpGet("byID")]

@@ -113,32 +113,5 @@ namespace Project.Repositories
             throw new NotImplementedException();
         }
 
-        void INoteRepo.noteActiveByID(int ID)
-        {
-            var IDParam = new SqlParameter("@ID", System.Data.SqlDbType.Int)
-            {
-                Value = ID
-            };
-            context.Database.ExecuteSqlRaw("exec noteActivateByID @ID", IDParam);
-        }
-
-        List<NoteProfileWUserName>? INoteRepo.noteGetByCreatorIDHidden(int CreatorID)
-        {
-            var IDParam = new SqlParameter("@CreatedBy", System.Data.SqlDbType.Int)
-            {
-                Value = CreatorID
-            };
-            var notes = context.NoteProfileWUserNames.FromSqlRaw("exec noteGetByCreatorIDHidden @CreatedBy", IDParam).ToList();
-            return notes;
-        }
-
-        void INoteRepo.noteInactiveByID(int ID)
-        {
-            var IDParam = new SqlParameter("@ID", System.Data.SqlDbType.Int)
-            {
-                Value = ID
-            };
-            context.Database.ExecuteSqlRaw("exec noteInactivateByID @ID", IDParam);
-        }
     }
 }

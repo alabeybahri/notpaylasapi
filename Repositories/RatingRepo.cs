@@ -77,5 +77,26 @@ namespace Project.Repositories
             return (float)sum/total;
 
         }
+
+        public bool ratingDelete(int NoteID,int UserID)
+        {
+            var NoteIDParam = new SqlParameter("@NoteID", System.Data.SqlDbType.Int)
+            {
+                Value = NoteID
+            };
+            var UserIDParam = new SqlParameter("@UserID", System.Data.SqlDbType.Int)
+            {
+                Value = UserID
+            };
+            try
+            {
+                _context.Database.ExecuteSqlRaw("exec ratingDelete @NoteID, @UserID", NoteIDParam, UserIDParam);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }

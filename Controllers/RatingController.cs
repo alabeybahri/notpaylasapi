@@ -67,7 +67,11 @@ namespace Project.Controllers
             return ratingValue;
         }
 
-
+        [HttpDelete("delete")]
+        public bool DeleteRating(int NoteID, int UserID)
+        {
+            return _ratingRepository.ratingDelete(NoteID,UserID);
+        }
 
     }
 }

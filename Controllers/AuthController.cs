@@ -36,16 +36,16 @@ namespace Project.Controllers
 
         [HttpPost]
         [Route("Register")]
-        public ActionResult<string> Register([FromBody] DTOUser requesteduser)
+        public bool Register([FromBody] DTOUser requesteduser)
         {
             var userName = requesteduser.userName;
             HashPassword(requesteduser.password, out byte[] passwordhash, out byte[] passwordsalt);
 
             if (userRepository.userCreate(userName, passwordhash, passwordsalt))
             {
-                return Ok();
+                return true;
             }
-            return Unauthorized("\"User already exists \"");
+            return false;
         }
 
         [HttpPost]
@@ -57,7 +57,7 @@ namespace Project.Controllers
 
             if (DBUser == null)
             {
-                return Unauthorized("Invalid password or username");
+                return NoContent();
             }
             if (CheckPassword(requesteduser.password, DBUser.PasswordHash, DBUser.PasswordSalt))
             {

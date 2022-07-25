@@ -8,5 +8,6 @@ namespace Project.Repositories
         public void ratingCreate(Rate requestedRating);
         public int? ratingGet(int NoteID, int UserID);
         public float? ratingGetAverage(int NoteID);
+        public bool ratingDelete(int NoteID,int UserID);
     }
 }
